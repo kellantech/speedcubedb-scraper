@@ -2,8 +2,9 @@ import requests
 from bs4 import BeautifulSoup as soup
 import json,os
 
-URL = "https://speedcubedb.com/a/Megaminx/MegaminxCP" # url of the page
 
+URL = input("url of page: ")
+nalg = int(input("how many algs are shown per case? "))
 
 data = requests.get(URL).text
 
@@ -20,13 +21,20 @@ h3 = [i.text for i in h3]
 
 res = []
 cs = []
-offset = 0 # play around with this until it works :) (start small)
-nalg = 1 # number of algs shown on page
+offset = 0 
 
 
-for ind in range(offset,len(c2),4):
-  #print(c2[ind])
-  res.append(c2[ind].find('div').text)
+
+
+while True:
+  try:
+    for ind in range(offset,len(c2),4):
+      #print(c2[ind])
+      res.append(c2[ind].find('div').text)
+    break
+  except:
+    pass
+  offset += 1
 
 
 out = []
