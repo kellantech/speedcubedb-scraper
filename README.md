@@ -1,0 +1,1 @@
+# speedcubedb-scraper
