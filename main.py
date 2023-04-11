@@ -3,8 +3,8 @@ from bs4 import BeautifulSoup as soup
 import json,os
 
 
-URL = input("url of page: ")
-nalg = int(input("how many algs are shown per case? "))
+URL = input("url of page: ") or 'https://speedcubedb.com/a/3x3/WV'
+algn = int(input("how many algs? "))+1
 
 data = requests.get(URL).text
 
@@ -21,30 +21,28 @@ h3 = [i.text for i in h3]
 
 res = []
 cs = []
-offset = 0 
+offset = 0
 
 
 
 
-while True:
-  try:
-    for ind in range(offset,len(c2),4):
-      #print(c2[ind])
-      res.append(c2[ind].find('div').text)
-    break
-  except:
-    pass
-  offset += 1
-
-
+for ind in range(offset,algn+offset*4):
+      res.append(cont.find_all('div',class_='col')[ind].select('li:not(.me-2)',class_='list-group-item')[0].text.split('\n')[1].split("\n")[0])
+      
+  
+#print(len(res))
+#print(h3)
+#print(res)
 out = []
+#print(dict(zip(h3,res)))
+x = dict(zip(h3,res[1:]))
+
+ou2 = [{"name":k,"algs":[v]} for k,v in x.items()]
 
 
-for n in range(0,len(res),nalg):
-  out.append({"name":h3[n//nalg],"algs":res[n:n+nalg]})
 
 with open('out.json','w') as f:
-  json.dump(out,f)  
+  json.dump(ou2,f)  
 
 
 os.system('python3 -m json.tool out.json')
